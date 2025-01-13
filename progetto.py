@@ -2,6 +2,7 @@ import sympy as sp
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
+import math
 
 def show(system):
     omega = np.logspace(-1,2,1000)
@@ -99,8 +100,19 @@ G=G[0]
 #a: daje
 
 
-print("\Funzione di trasferimento G(s):")
+print("Funzione di trasferimento G(s):")
 sp.pprint(G)
+
+#trovo i poli
+numeratore,denominatore = sp.fraction(G)
+res=sp.solve(sp.Eq(0,denominatore))
+print("poli: ",res)
+denominatore = [float(coef) for coef in sp.Poly(denominatore, s).all_coeffs()]
+omega_n=math.sqrt(denominatore[-1])
+print("omega_n: ",omega_n)
+smorzamento= denominatore[-2] / (2*omega_n)
+print("smorzamento: ",smorzamento)
+
 
 numeratore,denominatore = sp.fraction(G)
 numeratore = [float(coef) for coef in sp.Poly(numeratore, s).all_coeffs()]
@@ -116,7 +128,6 @@ k = 199 / gain_static
 
 print("errore a regime:",1/(1+float(abs((k*G).subs(s,0)))))
 numeratore,denominatore = sp.fraction(k*G)
-#denominatore = denominatore *s*s
 numeratore = [float(coef) for coef in sp.Poly(numeratore, s).all_coeffs()]
 denominatore = [float(coef) for coef in sp.Poly(denominatore, s).all_coeffs()]
 system = signal.TransferFunction(numeratore,denominatore)
