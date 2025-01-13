@@ -95,8 +95,11 @@ I = sp.eye(A.shape[0])
 # calcolo la funzione di trasferimento G
 G = C * ( s * I - A ).inv() * B + D
 G=G[0]
+#q: daje tutta per la funzione di trasferimento
+#a: daje
 
-print("\nMatrice G:")
+
+print("\Funzione di trasferimento G(s):")
 sp.pprint(G)
 
 numeratore,denominatore = sp.fraction(G)
