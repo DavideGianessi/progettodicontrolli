@@ -2,29 +2,46 @@ import sympy as sp
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import math
 
 def show(system):
-    omega = np.logspace(-1,2,1000)
+    omega = np.logspace(-1,6,1000)
     w, mag, phase = signal.bode(system, omega)
 
     plt.figure(figsize=(10,6))
 
     #ampiezza
-    plt.subplot(2,1,1)
+    ax1 = plt.subplot(2,1,1)
     plt.semilogx(w, mag)
     plt.title("diagramma di bode")
     plt.xlabel("frequenza [rad/s]")
     plt.ylabel("Magnitudine [dB]")
     plt.grid(True)
 
+    ax1.set_ylim(-200,200)
+
+    d_t = patches.Rectangle((0,0),0.5,40,color='red', alpha=0.3)
+    ax1.add_patch(d_t)
+    wc_min= patches.Rectangle((0,-1000),171.82,1000, color='red',alpha=0.3)
+    ax1.add_patch(wc_min)
+    d_n = patches.Rectangle((10**5,-63),10**8,1000,color='red', alpha=0.3)
+    ax1.add_patch(d_n)
+
+
     #fase
-    plt.subplot(2,1,2)
+    ax2=plt.subplot(2,1,2)
     plt.semilogx(w, phase)
     plt.title("diagramma di bode")
     plt.xlabel("frequenza [rad/s]")
     plt.ylabel("fase [gradi]")
     plt.grid(True)
+
+    ax2.set_ylim(-190,10)
+
+    Mf = patches.Rectangle((171.82,-300),10**5-171.82,300-180+89.24,color='red', alpha=0.3)
+    ax2.add_patch(Mf)
+
 
     plt.tight_layout()
     plt.show()
@@ -118,7 +135,14 @@ numeratore,denominatore = sp.fraction(G)
 numeratore = [float(coef) for coef in sp.Poly(numeratore, s).all_coeffs()]
 denominatore = [float(coef) for coef in sp.Poly(denominatore, s).all_coeffs()]
 system = signal.TransferFunction(numeratore,denominatore)
-show(system)
+#show(system)
+
+
+wc_min=171.82
+
+
+
+
 
 #guadagno
 G_static= G.subs(s,0)
