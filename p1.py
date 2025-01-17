@@ -17,9 +17,9 @@ def punto1():
     f= sp.Matrix([f1,f2])
     h= sp.Matrix([h])
 
-    equilibrio = sp.solve(f, (x1,x2,u),dict=True)[0]
+    equilibrio = sp.solve(f, (x1,x2,u),dict=True)[0] # Risolve f=0 per x1,x2,u e restituisce il risultato come dizionario (mappa variabile -> valore)
     equilibrio[x1]=theta_eq
-    equilibrio = { var: expr.subs(x1,theta_eq) for var, expr in equilibrio.items() }
+    equilibrio = { var: expr.subs(x1,theta_eq) for var, expr in equilibrio.items() }# Sostituisce theta_eq in x1,x2,u
 
     #matrici di stato
     A = f.jacobian([x1,x2]) # Derivata di f rispetto a x
@@ -27,6 +27,7 @@ def punto1():
     C = h.jacobian([x1,x2]) # Derivata di h rispetto a x
     D = h.jacobian([u])     # Derivata di h rispetto a u
 
+    # Sostituisce i valori di equilibrio nelle matrici
     A = A.subs(equilibrio)
     B = B.subs(equilibrio)
     C = C.subs(equilibrio)

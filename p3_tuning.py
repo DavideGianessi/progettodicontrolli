@@ -7,7 +7,7 @@ def punto3_tuning():
     s = sp.symbols('s', complex=True)
 
     #alziamo un po' il gain per iniziare da più in alto
-    Rs=k*50
+    Rs=k #regolatore statico
 
     #in base al diagramma di bode aggiungiamo uno zero a 5 per alzare la fase nella zona di crossover
     Rd= 1+(1/5)*s

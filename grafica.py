@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 def show(G,Mf=None,wc_min=None, d_t=None, n_t=None):
+    #passaggio della funzione di trasferimento a scipy
     s = sp.symbols('s', complex=True)
     numeratore,denominatore = sp.fraction(G)
     numeratore = [float(coef) for coef in sp.Poly(numeratore, s).all_coeffs()]
