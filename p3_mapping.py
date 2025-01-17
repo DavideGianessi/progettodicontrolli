@@ -13,6 +13,7 @@ def punto3_mapping():
     eq=sp.Eq(s_star/100,math.e**((-math.pi*xi)/sp.sqrt(1-xi**2))) #equazione per trovare xi
     solution=sp.solveset(eq, xi, domain=sp.S.Reals) #sp.solve() era troppo lento
     xi_star=float(list(solution)[0])
+    #sp.pprint(xi_star)
     Mf=100*xi_star
 
     #margine di fase da specifiche
