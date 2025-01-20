@@ -15,6 +15,9 @@ def show(G,Mf=None,wc_min=None, d_t=None, n_t=None):
     omega = np.logspace(-2,6,1000)
     w, mag, phase = signal.bode(system, omega)
 
+    crossover_index = np.argmin(np.abs(mag))
+    crossover_w = w[crossover_index]
+
     plt.figure(figsize=(10,6))
 
     #ampiezza
@@ -46,6 +49,8 @@ def show(G,Mf=None,wc_min=None, d_t=None, n_t=None):
     plt.grid(True)
 
     ax2.set_ylim(-190,10)
+
+    ax2.axvline(crossover_w,color='black')
 
     if(Mf):
         Mf_rec= patches.Rectangle((wc_min,-300),10**5-wc_min,300-180+Mf, color='red', alpha=0.3)

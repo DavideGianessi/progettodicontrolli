@@ -6,12 +6,13 @@ def punto3_1():
     G=punto2()
     s = sp.symbols('s', complex=True)
 
-    e_s=0.004 #<0.005 errore statico
-    Kp=(1-e_s)/e_s #guadagno proporzionale
+    e_s=0.004 #<0.005
+    #Kp=(1-e_s)/e_s
     #aggiusto l'errore con il guadagno statico
     G_static= G.subs(s,0)
-    gain_static= float(abs(G_static)) #guadagno attuale del sistema
-    k = Kp / gain_static #guadagno da aggiungere
+    gain_static= float(abs(G_static))
+    #k = Kp / gain_static
+    k=(2/e_s)/gain_static
     return k,G
 
 if __name__=='__main__':
