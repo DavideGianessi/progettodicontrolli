@@ -7,11 +7,9 @@ def punto3_1():
     s = sp.symbols('s', complex=True)
 
     e_s=0.004 #<0.005
-    #Kp=(1-e_s)/e_s
-    #aggiusto l'errore con il guadagno statico
+    #aggiusto l'errore a regime con il guadagno statico
     G_static= G.subs(s,0)
     gain_static= float(abs(G_static))
-    #k = Kp / gain_static
     k=(2/e_s)/gain_static
     return k,G
 
