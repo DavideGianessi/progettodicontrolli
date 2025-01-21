@@ -79,7 +79,7 @@ In questo progetto studiamo il controllo di una tavola rotante motorizzata, coll
 
 Assumiamo $\theta$(t) la posizione angolare della tavola e $\omega$(t) la sua velocità angolare. Otteniamo dal sistema scritto in precedenza che $\tau$($\theta$) è il rapporto di trasmissione del giunto cardanico funzione $\theta$ e dell'angolo tra i due alberi $\alpha$, mentre J è il momento di inerzia della tavola. Completando le equazioni abbiamo $C_m$ come imput di controllo, ossia la coppia generata dal motore elettrico, e i due coeficienti $\beta$ e k che sono rispettivamente l'attrito viscoso e l'elasticità del disco. Supponiamo in oltre che la posizione angolare $\theta$ della tavola possa essere misurata.
 
-Per la realizzazzione di questo progetto, per maggiore comodità, usabilità ed efficienza, abbiamo adoperato due diversi ambienti: Python e MATLAB. Con il primo abbiamo effettuato tutti i calcoli che verranno riportati in seguito nella relazione. Il secondo, invece, lo abbiamo utilizzato per effettuare i test del regolatore sul sistema lineare e sul sistema non lineare.
+Per la realizzazzione di questo progetto, per maggiore comodità, usabilità ed efficienza, abbiamo adoperato due diversi ambienti: Python e MATLAB. Con il primo abbiamo effettuato tutti i calcoli che verranno riportati in seguito nella relazione e il test sul sistema lineare. Il secondo, invece, lo abbiamo utilizzato per effettuare i test del regolatore sia sul sistema lineare, sia sul sistema non lineare.
 
 \section{Espressione del sistema in forma di stato e calcolo del sistema linearizzato intorno ad una coppia di equilibrio}
 
@@ -249,7 +249,7 @@ G(s) = C(sI -A)^{-1} B+D = \frac{0.0011547}{s^2+0.00075s+0.18546}.
 Dunque il sistema linearizzato~\eqref{eq:linearized_system} è caratterizzato dalla funzione di trasferimento~\eqref{eq:transfer_function} con $2$ poli complessi coniugati $p_1p_2 = -0.000375 \pm 0.254j $ e uno\\ In Figura ~\ref{Figura1} mostriamo il corrispondente diagramma di Bode. 
 \begin{figure}[H]
     \centering
-\includegraphics[width=110mm]{}
+\includegraphics[width=110mm]{figs/bode_G.png}
     \caption{}
     \label{Figura1}
 \end{figure}
@@ -294,7 +294,7 @@ Andiamo ad effettuare la mappatura punto per punto le specifiche richieste.
 Pertanto, in Figura ~\ref{Figura2}, mostriamo il diagramma di Bode della funzione di trasferimento $G(s)$ con le zone proibite emerse dalla mappatura delle specifiche.
 \begin{figure}[H]
     \centering
-\includegraphics[width=110mm]{images/figure_3.jpg}
+\includegraphics[width=110mm]{figs/bode_G_mapping.png}
     \caption{}
     \label{Figura2}
 \end{figure}
@@ -307,7 +307,7 @@ Per ridurre l'errore a regime del sistema aumentiamo il guadagno statico $\mu$ d
 Dunque, definiamo la funzione estesa $G_e(s) = R_s(s)G(s)$ e, in Figura ~\ref{Figura3}, mostriamo il suo diagramma di Bode per verificare se e quali zone proibite vengono attraversate.
 \begin{figure}[H]
     \centering
-\includegraphics[width=110mm]{images/figure_4.jpg}
+\includegraphics[width=110mm]{figs/bode_Ge.png}
     \caption{}
     \label{Figura3}
 \end{figure}
@@ -327,13 +327,13 @@ R_s(s)=\frac{1+\tau s}{1+\tau\alpha s}
 In Figura ~\ref{Figura4}, mostriamo il diagramma di Bode della funzione d'anello $L(s) = R_d(s) G_e(s)$
 \begin{figure}[H]
     \centering
-\includegraphics[width=110mm]{images/figure_5.jpg}
+\includegraphics[width=110mm]{figs/bode_L.png}
     \caption{}
     \label{Figura4}
 \end{figure}
 \section{Test sul sistema linearizzato}
 
-In questa sezione, testiamo l'efficacia del controllore progettato sul sistema linearizzato considerando in primo luogo le risposte al riferimento a gradino w(t) e ai rumori $n(t)$ e $d(t)$, per poi ottenere l'uscita complessiva $y_{\text{tot}}$ sommando le singole risposte per il princio di sovrapposizione degli effetti. Specifichiamo inoltre che, come detto all'inizio, il test è stato effettuato su MATLAB; tuttavia, il grafico che verrà riportato in seguito è stato realizzato con Python.
+In questa sezione, testiamo l'efficacia del controllore progettato sul sistema linearizzato considerando in primo luogo le risposte al riferimento a gradino w(t) e ai rumori $n(t)$ e $d(t)$, per poi ottenere l'uscita complessiva $y_{\text{tot}}$ sommando le singole risposte per il princio di sovrapposizione degli effetti. Specifichiamo inoltre che, come detto all'inizio, il test è stato effettuato sia su MATLAB che su python; mostriamo in seguito il grafico realizzato con Python.
 
 %
 \begin{subequations}\label{eq:system}
@@ -350,7 +350,7 @@ In questa sezione, testiamo l'efficacia del controllore progettato sul sistema l
 %
 \begin{figure}[H]
     \centering
-\includegraphics[width=110mm]{images/figure_6.jpg}
+\includegraphics[width=110mm]{figs/linear_sim.png}
     \caption{}
     \label{Figura6}
 \end{figure}
@@ -362,7 +362,8 @@ Da Figura 5 notiamo che l'uscita soddisfa i vincoli relativi alla sovraelongazio
 
 In questa sezione, testiamo l'efficacia del controllore progettato sul modello non lineare.
 
-Per fare ciò dovremo:
+
+Per fare ciò useremo l'estensione simulink di MATLAB. Per poter testare il regolatore sul sistema non lineare dobbiamo effettuare due operazioni:
 
 \begin{itemize}
 	\item[1)] Aggiungere $u_e$ in ingresso al sistema come parte dell'ingresso totale $u$, quindi $u = \delta u + u_e$. L'uscita sarà $y$ anziché $\delta y$.
@@ -370,27 +371,54 @@ Per fare ciò dovremo:
         \item[2)]Sottrarre $y_e$ in uscita al sistema, così da avere l'uscita $\delta y = y - y_e$. Questo consentirà di calcolare l'errore $e$ sottraendo $\delta y$ dal riferimento w e utilizzarlo come ingresso per il regolatore.
 \end{itemize}
 
-In figura mostreremo l'uscita del sistema non lineare considerando i $n(t)$ e $d(t)$.
 \begin{figure}[H]
     \centering
-\includegraphics[width=110mm]{images/figure_10.jpg}
+\includegraphics[width=110mm]{figs/simulink.PNG}
     \caption{}
     \label{Figura9}
+\end{figure}
+
+In figura mostreremo l'uscita del sistema non lineare considerando $n(t)$ e $d(t)$.
+\begin{figure}[H]
+    \centering
+\includegraphics[width=110mm]{figs/nonLineare.PNG}
+    \caption{}
+    \label{Figura10}
 \end{figure}
 \section{Sistema lineare e non lineare, conclusioni}
 
 In conclusione, possiamo apprezzare come il sistema lineare in anello chiuso rispetti le specifiche assegnate e, una volta esaurito il transitorio, l'uscita tenda a seguire il riferimento w(t) assegnato. Il sistema non lineare, invece, mostra che il regolatore si comporta diversamente rispetto alle specifiche. Questo accade perché il sistema non è predisposto alla linearizzazione o, comunque, presenta un'elevata imprecisione rispetto al sistema originale, che causa tale comportamento indesiderato.
 
-\section{Punti opzionali: la dinamica del sistema}
+\section{Punto opzionale: range di condizioni iniziali}
 
+Supponendo un riferimento w(t) ≡ 0, esploriamo il range di condizioni iniziali dello stato del sistema non lineare (nell’intorno del punto di equilibrio) tali per cui l’uscita del sistema in anello chiuso converga a h(xe,ue).
 
+Per fare ciò, riprendiamo il modello non lineare del sistema su simulink e alteriamo le condizioni iniziali del componente di integrazione. In particolare aggiungiamo ad entrambe le componenti di equilibrio $\theta_e$ e $\omega_e$ una \delta che faremo variare a nostro piacimento fino a trovare il range di condizioni iniziali che ci permettono di convergere all'uscita desiderata.
+Inoltre per poter ottenere dei grafici leggibili e avere una effetiva convergenza, abbiamo deciso di togliere il rumore e il disturbo dal sistema.
+Riportiamo in seguito i grafici ottenuti con simulink.
 
-\section{Punti opzionali: }
+\begin{figure}[H]
+    \centering
+\includegraphics[width=110mm]{figs/delta0.PNG}
+    \caption{}
+    \label{Figura11: delta = 0}
+\end{figure}
 
-Supponendo un riferimento w(t) ≡ 0, esplorare il range di condizioni iniziali dello stato del sistema non lineare (nell’intorno del punto di equilibrio) tali per cui l’uscita del sistema in anello chiuso converga a h(xe,ue).
+\begin{figure}[H]
+    \centering
+\includegraphics[width=110mm]{figs/delta8.PNG}
+    \caption{}
+    \label{Figura10: delta = 8}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+\includegraphics[width=110mm]{figs/delta9.PNG}
+    \caption{}
+    \label{Figura10: delta = 9}
+\end{figure}
 
-
-
+\section{Conclusione punto opzionale}
+Possiamo notare che per valori di $\delta$ compresi tra 0 e 8 l'uscita del sistema non lineare converge a $h(xe,ue)$, mentre per valori di $\delta$ maggiori di 8 l'uscita del sistema non lineare non converge verso $h(xe,ue)$.
 
 \end{document}
