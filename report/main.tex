@@ -391,34 +391,39 @@ In conclusione, possiamo apprezzare come il sistema lineare in anello chiuso ris
 
 \section{Punto opzionale: range di condizioni iniziali}
 
-Supponendo un riferimento w(t) ≡ 0, esploriamo il range di condizioni iniziali dello stato del sistema non lineare (nell’intorno del punto di equilibrio) tali per cui l’uscita del sistema in anello chiuso converga a h(xe,ue).
+Supponendo un riferimento w(t) = 0, esploriamo il range di condizioni iniziali dello stato del sistema non lineare (nell’intorno del punto di equilibrio) tali per cui l’uscita del sistema in anello chiuso converga a h(xe,ue).
 
-Per fare ciò, riprendiamo il modello non lineare del sistema su simulink e alteriamo le condizioni iniziali del componente di integrazione. In particolare aggiungiamo ad entrambe le componenti di equilibrio $\theta_e$ e $\omega_e$ una \delta che faremo variare a nostro piacimento fino a trovare il range di condizioni iniziali che ci permettono di convergere all'uscita desiderata.
+Per fare ciò, riprendiamo il modello non lineare del sistema su simulink e alteriamo le condizioni iniziali del componente di integrazione. In particolare aggiungiamo ad entrambe le componenti di equilibrio $\theta_e$ e $\omega_e$ una $\delta$ che faremo variare a nostro piacimento fino a trovare il range di condizioni iniziali che ci permettono di convergere all'uscita desiderata.
 Inoltre per poter ottenere dei grafici leggibili e avere una effetiva convergenza, abbiamo deciso di togliere il rumore e il disturbo dal sistema.
 Riportiamo in seguito i grafici ottenuti con simulink.
 
+delta = 0\\
 \begin{figure}[H]
     \centering
 \includegraphics[width=110mm]{figs/delta0.PNG}
     \caption{}
-    \label{Figura11: delta = 0}
+    \label{Figura11}
 \end{figure}
 
+delta = 8\\
 \begin{figure}[H]
     \centering
 \includegraphics[width=110mm]{figs/delta8.PNG}
     \caption{}
-    \label{Figura10: delta = 8}
+    \label{Figura12}
 \end{figure}
 
+\newpage
+delta = 9\\
 \begin{figure}[H]
     \centering
 \includegraphics[width=110mm]{figs/delta9.PNG}
     \caption{}
-    \label{Figura10: delta = 9}
+    \label{Figura13}
 \end{figure}
 
 \section{Conclusione punto opzionale}
-Possiamo notare che per valori di $\delta$ compresi tra 0 e 8 l'uscita del sistema non lineare converge a $h(xe,ue)$, mentre per valori di $\delta$ maggiori di 8 l'uscita del sistema non lineare non converge verso $h(xe,ue)$.
+
+Possiamo notare che per valori di $\delta$ compresi tra 0 e 8 l'uscita del sistema non lineare converge a $h(xe,ue)$, mentre per valori di $\delta$ maggiori di 8 l'uscita del sistema non converge verso $h(xe,ue)$.
 
 \end{document}
